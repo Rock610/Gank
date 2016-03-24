@@ -15,11 +15,11 @@
         android:id="@+id/archivesTitleTv"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:maxLines="2"
         android:ellipsize="end"
         android:textColor="@android:color/white"
-        android:background="@color/white70per"
+        android:background="@color/white30per"
         android:layout_gravity="bottom"
         />
 

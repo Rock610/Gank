@@ -21,6 +21,10 @@ public class BaseRecyclerViewAdapter<T,VH extends RecyclerView.ViewHolder> exten
 
     }
 
+    public List<T> getList(){
+        return mList;
+    }
+
     public BaseRecyclerViewAdapter(Activity activity, List<T> mList) {
         this.activity = activity;
         if(mList == null){

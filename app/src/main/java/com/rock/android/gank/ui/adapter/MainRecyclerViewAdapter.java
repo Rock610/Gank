@@ -48,7 +48,17 @@ public class MainRecyclerViewAdapter extends BaseRecyclerViewAdapter<Module,Main
 
     }
 
-    class MainViewHolder extends RecyclerView.ViewHolder{
+    private OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(View v,int position);
+    }
+
+    class MainViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public ImageView imageView;
         public TextView archivesTv;
@@ -61,6 +71,15 @@ public class MainRecyclerViewAdapter extends BaseRecyclerViewAdapter<Module,Main
             imageView = (ImageView) itemView.findViewById(R.id.girlsImage);
             imageView.setLayoutParams(new FrameLayout.LayoutParams(width,height));
             archivesTv = (TextView) itemView.findViewById(R.id.archivesTitleTv);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if( listener != null){
+                listener.onItemClick(v,getLayoutPosition());
+            }
         }
     }
 }

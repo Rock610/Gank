@@ -3,7 +3,6 @@ package com.rock.android.gank.ui;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,21 +15,29 @@ import com.rock.android.gank.Model.ModuleResult;
 import com.rock.android.gank.R;
 import com.rock.android.gank.network.NetWorkManager;
 import com.rock.android.gank.ui.adapter.MainRecyclerViewAdapter;
+import com.rock.android.gank.ui.base.ToolbarActivity;
+import com.rock.android.gank.util.SpacesItemDecoration;
+import com.rock.android.rocklibrary.Utils.DensityUtils;
 
 import java.util.ArrayList;
 
 import rx.Subscriber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ToolbarActivity {
 
     private RecyclerView mainRecyclerView;
     private MainRecyclerViewAdapter mAdapter;
     private SwipeRefreshLayout mainSwipeRefreshLayout;
 
     @Override
+    protected int provideContentViewId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -49,9 +56,17 @@ public class MainActivity extends AppCompatActivity {
         mainSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.mainSwipeRefreshLayout);
         mainRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
         mainRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        mainRecyclerView.addItemDecoration(new SpacesItemDecoration(2,DensityUtils.dip2px(this,10),true));
         mAdapter = new MainRecyclerViewAdapter(this);
 
         mainRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickListener(new MainRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Module module = mAdapter.getList().get(position);
+            }
+        });
 
         mainSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -76,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNext(ModuleResult module) {
-                System.out.println(module);
+                Log.d("module",module.toString());
                 mAdapter.addAll((ArrayList<Module>) module.results);
             }
         };
