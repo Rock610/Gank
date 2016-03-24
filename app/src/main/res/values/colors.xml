@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- 30%不透明白-->
+    <color name="white30per">#4Cffffff</color>
+
+    <!-- 60%不透明度黑-->
+    <color name="black60per">#99000000</color>
+
+    <!-- 70%不透明白-->
+    <color name="white70per">#B2ffffff</color>
+</resources>
