@@ -1,5 +1,6 @@
 package com.rock.android.gank.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -43,6 +44,7 @@ public class MainActivity extends ToolbarActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
             }
         });
 
@@ -65,6 +67,9 @@ public class MainActivity extends ToolbarActivity {
             @Override
             public void onItemClick(View v, int position) {
                 Module module = mAdapter.getList().get(position);
+                Intent intent = new Intent(MainActivity.this,GankContentActivity.class);
+                intent.putExtra(GankContentActivity.KEY_DATE,module.publishedAt);
+                startActivity(intent);
             }
         });
 

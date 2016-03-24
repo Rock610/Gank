@@ -5,9 +5,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.rock.android.gank.Model.GankDateData;
+import com.rock.android.gank.Model.Module;
 import com.rock.android.gank.R;
 import com.rock.android.gank.network.NetWorkManager;
+import com.rock.android.gank.ui.adapter.GankContentAdapter;
 import com.rock.android.gank.ui.base.ToolbarActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Subscriber;
 
@@ -15,6 +20,7 @@ public class GankContentActivity extends ToolbarActivity {
 
     public static final String KEY_DATE = "key_date";
     private RecyclerView gankContentRcv;
+    private GankContentAdapter mAdapter;
 
     @Override
     protected int provideContentViewId() {
@@ -30,9 +36,11 @@ public class GankContentActivity extends ToolbarActivity {
     private void init(){
         gankContentRcv = (RecyclerView) findViewById(R.id.gankContentRcv);
         gankContentRcv.setLayoutManager(new LinearLayoutManager(this));
-        String date = getIntent().getStringExtra(KEY_DATE);
-
-        requestGankDateData(date);
+//        String date = getIntent().getStringExtra(KEY_DATE);
+//        date = DateFormat.dateToString(DateFormat.String2Date(date));
+//        mAdapter = new GankContentAdapter(this);
+//
+//        requestGankDateData(date);
     }
 
 
@@ -50,7 +58,10 @@ public class GankContentActivity extends ToolbarActivity {
 
             @Override
             public void onNext(GankDateData gankDateData) {
-
+                List<List<Module>> moduleses = new ArrayList<>();
+                moduleses.add(gankDateData.results.Android);
+                moduleses.add(gankDateData.results.iOS);
+                mAdapter.addAll((ArrayList<List<Module>>) moduleses);
             }
         }, date);
     }
