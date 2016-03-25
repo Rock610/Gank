@@ -1,5 +1,7 @@
 package com.rock.android.gank.Model;
 
+import com.rock.android.rocklibrary.Utils.DateFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -27,6 +29,10 @@ public class Module implements Serializable{
     public String url;
     public boolean used;
     public String who;
+
+    public String fetchPublishedAtAsLocal(){
+        return DateFormat.dateToString(publishedAt);
+    }
 
     @Override
     public String toString() {

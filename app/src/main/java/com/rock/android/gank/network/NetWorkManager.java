@@ -22,7 +22,7 @@ public class NetWorkManager extends BaseNetWorkManager {
 
     }
 
-    private GankDateService service;
+    public GankDateService service;
 
     private static class SingletonHolder{
         private static final NetWorkManager INSTANCE = new NetWorkManager();

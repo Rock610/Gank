@@ -18,12 +18,13 @@ import com.rock.android.gank.network.NetWorkManager;
 import com.rock.android.gank.ui.adapter.MainRecyclerViewAdapter;
 import com.rock.android.gank.ui.base.ToolbarActivity;
 import com.rock.android.gank.util.SpacesItemDecoration;
-import com.rock.android.rocklibrary.Utils.DateFormat;
 import com.rock.android.rocklibrary.Utils.DensityUtils;
 
 import java.util.ArrayList;
 
+import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Func1;
 
 public class MainActivity extends ToolbarActivity {
 
@@ -73,7 +74,7 @@ public class MainActivity extends ToolbarActivity {
             public void onItemClick(View v, int position) {
                 Module module = mAdapter.getList().get(position);
                 Intent intent = new Intent(MainActivity.this,GankContentActivity.class);
-                intent.putExtra(GankContentActivity.KEY_DATE, DateFormat.dateToString(module.publishedAt));
+                intent.putExtra(GankContentActivity.KEY_DATE, module.fetchPublishedAtAsLocal());
                 startActivity(intent);
             }
         });
@@ -102,8 +103,42 @@ public class MainActivity extends ToolbarActivity {
             @Override
             public void onNext(ModuleResult module) {
                 Log.d("module",module.toString());
-                mAdapter.addAll((ArrayList<Module>) module.results);
-                mAdapter.pagePlusOne();
+
+                Observable.just(module).flatMap(new Func1<ModuleResult, Observable<Module>>() {
+                    @Override
+                    public Observable<Module> call(ModuleResult moduleResult) {
+
+                        return Observable.from(moduleResult.results);
+                    }
+                }).subscribe(new Subscriber<Module>() {
+                    @Override
+                    public void onCompleted() {
+                        mAdapter.notifyDataSetChanged();
+                        mAdapter.pagePlusOne();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Module module) {
+                        ArrayList<Module> list = (ArrayList<Module>) mAdapter.getList();
+                        String dateTemp = module.fetchPublishedAtAsLocal();
+                        boolean hasTheDate = false;
+                        for (Module module1 : list) {
+                            if(dateTemp.equals(module1.fetchPublishedAtAsLocal())){
+                                hasTheDate = true;
+                                break;
+                            }
+                        }
+                        if(!hasTheDate){
+                            list.add(module);
+                        }
+                    }
+                });
+
             }
         };
 
