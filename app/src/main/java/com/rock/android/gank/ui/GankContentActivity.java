@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.rock.android.gank.Model.GankDateData;
 import com.rock.android.gank.Model.Module;
 import com.rock.android.gank.R;
@@ -23,6 +25,7 @@ public class GankContentActivity extends ToolbarActivity {
     public static final String KEY_DATE = "key_date";
     private RecyclerView gankContentRcv;
     private GankContentAdapter mAdapter;
+    private ImageView girlsImage;
 
     @Override
     protected int provideContentViewId() {
@@ -41,6 +44,7 @@ public class GankContentActivity extends ToolbarActivity {
     }
 
     private void init(){
+        girlsImage = (ImageView) findViewById(R.id.girlsImage);
         gankContentRcv = (RecyclerView) findViewById(R.id.gankContentRcv);
         gankContentRcv.setLayoutManager(new LinearLayoutManager(this));
         String date = getIntent().getStringExtra(KEY_DATE);
@@ -76,10 +80,15 @@ public class GankContentActivity extends ToolbarActivity {
             public void onNext(GankDateData gankDateData) {
                 getDataAll(gankDateData.results.Android);
                 getDataAll(gankDateData.results.iOS);
-                getDataAll(gankDateData.results.benefits);
+//                getDataAll(gankDateData.results.benefits);
                 getDataAll(gankDateData.results.otherResource);
                 getDataAll(gankDateData.results.videos);
                 getDataAll(gankDateData.results.recmmends);
+
+                List<Module> girls = gankDateData.results.benefits;
+                if(girls != null && girls.size() > 0){
+                    Glide.with(GankContentActivity.this).load(girls.get(0).url).into(girlsImage);
+                }
 
             }
         }, date);
