@@ -27,7 +27,8 @@
             android:name=".ui.SplashActivity"
             android:label="@string/title_activity_splash"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.GankContentActivity"></activity>
+        <activity android:name=".ui.GankContentActivity" />
+        <activity android:name=".ui.WebViewActivity"></activity>
     </application>
 
 </manifest>

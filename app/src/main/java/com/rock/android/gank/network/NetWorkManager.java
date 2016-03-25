@@ -1,6 +1,5 @@
 package com.rock.android.gank.network;
 
-import com.alibaba.fastjson.JSON;
 import com.rock.android.gank.Model.GankDateData;
 import com.rock.android.gank.Model.ModuleResult;
 import com.rock.android.gank.network.RetrofitServices.GankDateService;
@@ -20,8 +19,7 @@ public class NetWorkManager extends BaseNetWorkManager {
     private NetWorkManager() {
         super();
         service = retrofit.create(GankDateService.class);
-        //配置默认date格式
-        JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
     }
 
     private GankDateService service;

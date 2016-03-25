@@ -1,5 +1,7 @@
 package com.rock.android.gank.Model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.List;
 
 /**
@@ -23,13 +25,16 @@ public class GankDateData {
 
         public List<Module> iOS;
 
+        @JSONField(name = "休息视频")
         public List<Module> videos;
 
+        @JSONField(name = "拓展资源")
         public List<Module> otherResource;
 
+        @JSONField(name = "瞎推荐")
         public List<Module> recmmends;
 
-
+        @JSONField(name = "福利")
         public List<Module> benefits;
 
         @Override

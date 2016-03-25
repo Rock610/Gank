@@ -1,8 +1,10 @@
 package com.rock.android.gank.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.rock.android.gank.Model.GankDateData;
 import com.rock.android.gank.Model.Module;
@@ -28,6 +30,11 @@ public class GankContentActivity extends ToolbarActivity {
     }
 
     @Override
+    public boolean canBack() {
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
@@ -36,11 +43,20 @@ public class GankContentActivity extends ToolbarActivity {
     private void init(){
         gankContentRcv = (RecyclerView) findViewById(R.id.gankContentRcv);
         gankContentRcv.setLayoutManager(new LinearLayoutManager(this));
-//        String date = getIntent().getStringExtra(KEY_DATE);
-//        date = DateFormat.dateToString(DateFormat.String2Date(date));
-//        mAdapter = new GankContentAdapter(this);
-//
-//        requestGankDateData(date);
+        String date = getIntent().getStringExtra(KEY_DATE);
+        mAdapter = new GankContentAdapter(this);
+
+        gankContentRcv.setAdapter(mAdapter);
+        mAdapter.setListener(new GankContentAdapter.OnContentTvClickListener() {
+            @Override
+            public void onContentTvClick(View v, int position) {
+                Module module = mAdapter.getList().get(position);
+                Intent intent = new Intent(GankContentActivity.this, WebViewActivity.class);
+                intent.putExtra("url",module.url);
+                startActivity(intent);
+            }
+        });
+        requestGankDateData(date);
     }
 
 
@@ -58,11 +74,22 @@ public class GankContentActivity extends ToolbarActivity {
 
             @Override
             public void onNext(GankDateData gankDateData) {
-                List<List<Module>> moduleses = new ArrayList<>();
-                moduleses.add(gankDateData.results.Android);
-                moduleses.add(gankDateData.results.iOS);
-                mAdapter.addAll((ArrayList<List<Module>>) moduleses);
+                getDataAll(gankDateData.results.Android);
+                getDataAll(gankDateData.results.iOS);
+                getDataAll(gankDateData.results.benefits);
+                getDataAll(gankDateData.results.otherResource);
+                getDataAll(gankDateData.results.videos);
+                getDataAll(gankDateData.results.recmmends);
+
             }
         }, date);
     }
+
+    private void getDataAll(List<Module> modules){
+        if(modules != null && modules.size() > 0){
+            mAdapter.addAll((ArrayList<Module>) modules);
+        }
+
+    }
+
 }

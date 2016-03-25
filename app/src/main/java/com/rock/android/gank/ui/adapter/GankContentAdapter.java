@@ -15,13 +15,14 @@ import java.util.List;
 /**
  * Created by rock on 16/3/24.
  */
-public class GankContentAdapter extends BaseRecyclerViewAdapter<List<Module>,GankContentAdapter.ViewHolder> {
+public class GankContentAdapter extends BaseRecyclerViewAdapter<Module,GankContentAdapter.ViewHolder> {
 
+    private String type;
     public GankContentAdapter(Activity activity) {
         super(activity);
     }
 
-    public GankContentAdapter(Activity activity, List<List<Module>> mList) {
+    public GankContentAdapter(Activity activity, List<Module> mList) {
         super(activity, mList);
     }
 
@@ -36,16 +37,53 @@ public class GankContentAdapter extends BaseRecyclerViewAdapter<List<Module>,Gan
     public void onBindViewHolder(ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
 
-        holder.gankContentTv.setText(mList.get(position).get(0).desc);
+        final Module module = mList.get(position);
+        String curType = module.type;
+        if(position == 0){
+            holder.titleTv.setVisibility(View.VISIBLE);
+            holder.titleTv.setText(module.type);
+        }else{
+            boolean isShowTitle = !curType.equals(mList.get(position - 1).type);
+            if(isShowTitle){
+                holder.titleTv.setVisibility(View.VISIBLE);
+                holder.titleTv.setText(module.type);
+            }else{
+                holder.titleTv.setVisibility(View.GONE);
+            }
+        }
+
+        holder.gankContentTv.setText(mList.get(position).desc.trim());
+
+    }
+
+    private OnContentTvClickListener mListener;
+
+    public void setListener(OnContentTvClickListener mListener) {
+        this.mListener = mListener;
+    }
+
+    public interface OnContentTvClickListener{
+        void onContentTvClick(View v,int position);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView gankContentTv;
+        public TextView titleTv;
+        public String type;
         public ViewHolder(View itemView) {
             super(itemView);
-
+            titleTv = (TextView) itemView.findViewById(R.id.titleTv);
             gankContentTv = (TextView) itemView.findViewById(R.id.gankContentTv);
+            gankContentTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null){
+                        mListener.onContentTvClick(v,getLayoutPosition());
+                    }
+                }
+            });
+
         }
     }
 }

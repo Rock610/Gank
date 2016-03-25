@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/gankContentTv"
+        android:id="@+id/titleTv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="15sp"
-        android:singleLine="true"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
-        />
+        android:textColor="@android:color/black"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/gankContentTv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:layout_marginTop="6dp"
+        android:singleLine="true"
+        android:textSize="15sp" />
+
+</LinearLayout>

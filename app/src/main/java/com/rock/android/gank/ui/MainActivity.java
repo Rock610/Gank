@@ -18,6 +18,7 @@ import com.rock.android.gank.network.NetWorkManager;
 import com.rock.android.gank.ui.adapter.MainRecyclerViewAdapter;
 import com.rock.android.gank.ui.base.ToolbarActivity;
 import com.rock.android.gank.util.SpacesItemDecoration;
+import com.rock.android.rocklibrary.Utils.DateFormat;
 import com.rock.android.rocklibrary.Utils.DensityUtils;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class MainActivity extends ToolbarActivity {
     private RecyclerView mainRecyclerView;
     private MainRecyclerViewAdapter mAdapter;
     private SwipeRefreshLayout mainSwipeRefreshLayout;
+    private boolean mIsFirstTimeTouchBottom;
 
     @Override
     protected int provideContentViewId() {
@@ -57,18 +59,21 @@ public class MainActivity extends ToolbarActivity {
     private void init(){
         mainSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.mainSwipeRefreshLayout);
         mainRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
-        mainRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
+        mainRecyclerView.setLayoutManager(layoutManager);
         mainRecyclerView.addItemDecoration(new SpacesItemDecoration(2,DensityUtils.dip2px(this,10),true));
         mAdapter = new MainRecyclerViewAdapter(this);
 
         mainRecyclerView.setAdapter(mAdapter);
+        mainRecyclerView.addOnScrollListener(getOnBottomListener(layoutManager));
+
 
         mAdapter.setOnItemClickListener(new MainRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 Module module = mAdapter.getList().get(position);
                 Intent intent = new Intent(MainActivity.this,GankContentActivity.class);
-                intent.putExtra(GankContentActivity.KEY_DATE,module.publishedAt);
+                intent.putExtra(GankContentActivity.KEY_DATE, DateFormat.dateToString(module.publishedAt));
                 startActivity(intent);
             }
         });
@@ -98,6 +103,7 @@ public class MainActivity extends ToolbarActivity {
             public void onNext(ModuleResult module) {
                 Log.d("module",module.toString());
                 mAdapter.addAll((ArrayList<Module>) module.results);
+                mAdapter.pagePlusOne();
             }
         };
 
@@ -124,5 +130,25 @@ public class MainActivity extends ToolbarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    RecyclerView.OnScrollListener getOnBottomListener(final GridLayoutManager layoutManager) {
+        return new RecyclerView.OnScrollListener() {
+            @Override public void onScrolled(RecyclerView rv, int dx, int dy) {
+                boolean isBottom =
+                        layoutManager.findLastCompletelyVisibleItemPosition() >=
+                                mAdapter.getItemCount() -
+                                        10;
+                if (!mainSwipeRefreshLayout.isRefreshing() && isBottom) {
+                    if (!mIsFirstTimeTouchBottom) {
+                        mainSwipeRefreshLayout.setRefreshing(true);
+                        requestBenefitsData();
+                    }
+                    else {
+                        mIsFirstTimeTouchBottom = false;
+                    }
+                }
+            }
+        };
     }
 }
