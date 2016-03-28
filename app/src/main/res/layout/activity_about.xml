@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.rock.android.gank.ui.AboutActivity">
+
+    <include layout="@layout/view_toolbar"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:text="说明:本app是基于代码家的干货集api开发,\n致力于分享干货,所有码农共同进步\n代码有借鉴到@darkeet的meizhiApp,侵删!"
+        />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/gankapp_mrrock"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/email_wang1ran_163_com"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        />
+
+    <TextView
+        android:id="@+id/blogTv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        />
+
+    <TextView
+        android:id="@+id/jianshuTv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        />
+
+
+</LinearLayout>
