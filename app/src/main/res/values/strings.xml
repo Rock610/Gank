@@ -12,4 +12,5 @@
     <string name="my_jianshu">我的简书:</string>
     <string name="email_wang1ran_163_com">Email：wang1ran@163.com</string>
     <string name="gankapp_mrrock">GankApp作者：MrRock</string>
+    <string name="request_failed">请求失败</string>
 </resources>

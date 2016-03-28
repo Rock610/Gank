@@ -8,6 +8,7 @@ import com.rock.android.rocklibrary.DataManager.NetWork.BaseNetWorkManager;
 import java.util.List;
 
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -33,24 +34,24 @@ public class NetWorkManager extends BaseNetWorkManager {
         return SingletonHolder.INSTANCE;
     }
 
-    public void getGankDateData(Subscriber<GankDateData> subscriber,String date){
-        service.getGankDateData(date)
+    public Subscription getGankDateData(Subscriber<GankDateData> subscriber,String date){
+        return service.getGankDateData(date)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
 
-    public void getHistory(Subscriber<List<String>> subscriber){
-        service.getHistory()
+    public Subscription getHistory(Subscriber<List<String>> subscriber){
+        return service.getHistory()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
 
-    public void getDataByType(Subscriber<ModuleResult> subscriber, String type, int size, int page){
-        service.getGankDataByType(type,size,page)
+    public Subscription getDataByType(Subscriber<ModuleResult> subscriber, String type, int size, int page){
+        return service.getGankDataByType(type,size,page)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

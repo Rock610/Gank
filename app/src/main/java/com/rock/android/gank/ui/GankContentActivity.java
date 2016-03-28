@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.rock.android.gank.Model.GankDateData;
@@ -75,7 +76,7 @@ public class GankContentActivity extends ToolbarActivity {
 
             @Override
             public void onError(Throwable e) {
-
+                Toast.makeText(GankContentActivity.this, R.string.request_failed,Toast.LENGTH_SHORT).show();
             }
 
             @Override

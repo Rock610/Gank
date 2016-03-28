@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.rock.android.gank.Model.Module;
 import com.rock.android.gank.Model.ModuleResult;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.functions.Func1;
 
 public class MainActivity extends ToolbarActivity {
@@ -34,6 +36,7 @@ public class MainActivity extends ToolbarActivity {
     private SwipeRefreshLayout mainSwipeRefreshLayout;
     private boolean mIsFirstTimeTouchBottom;
     private boolean isHasMore = true;
+    private Subscription mSubscription;
 
     @Override
     protected int provideContentViewId() {
@@ -55,8 +58,13 @@ public class MainActivity extends ToolbarActivity {
 
         init();
 
+        mainSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                requestBenefitsData();
+            }
+        });
 
-        requestBenefitsData();
     }
 
     private void init(){
@@ -103,6 +111,8 @@ public class MainActivity extends ToolbarActivity {
 
             @Override
             public void onError(Throwable e) {
+                mainSwipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(MainActivity.this, R.string.request_failed,Toast.LENGTH_SHORT).show();
                 Log.e("requestBenefits",e.toString());
             }
 
@@ -118,6 +128,11 @@ public class MainActivity extends ToolbarActivity {
                 if(list.size() < 10){
                     isHasMore = false;
                 }
+
+                if(mAdapter.getPage() == 1){
+                    mAdapter.clear();
+                }
+
                 Observable.just(module).flatMap(new Func1<ModuleResult, Observable<Module>>() {
                     @Override
                     public Observable<Module> call(ModuleResult moduleResult) {
@@ -157,7 +172,14 @@ public class MainActivity extends ToolbarActivity {
             }
         };
 
-        NetWorkManager.getInstance().getDataByType(subscriber,"福利",10,mAdapter.getPage());
+        mSubscription = NetWorkManager.getInstance().getDataByType(subscriber,"福利",10,mAdapter.getPage());
+    }
+
+    @Override
+    protected void onDestroy() {
+        mSubscription.unsubscribe();
+        super.onDestroy();
+
     }
 
     @Override
