@@ -23,7 +23,7 @@ public class AboutActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mToolbar.setTitle(R.string.about);
+        getSupportActionBar().setTitle(R.string.about);
         TextView blogTv = (TextView) findViewById(R.id.blogTv);
         TextView jianshuTv = (TextView) findViewById(R.id.jianshuTv);
 

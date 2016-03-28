@@ -48,6 +48,8 @@ public class GankContentActivity extends ToolbarActivity {
         gankContentRcv = (RecyclerView) findViewById(R.id.gankContentRcv);
         gankContentRcv.setLayoutManager(new LinearLayoutManager(this));
         String date = getIntent().getStringExtra(KEY_DATE);
+
+        getSupportActionBar().setTitle(date);
         mAdapter = new GankContentAdapter(this);
 
         gankContentRcv.setAdapter(mAdapter);

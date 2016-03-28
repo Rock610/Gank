@@ -21,6 +21,7 @@ import com.rock.android.gank.util.SpacesItemDecoration;
 import com.rock.android.rocklibrary.Utils.DensityUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -32,6 +33,7 @@ public class MainActivity extends ToolbarActivity {
     private MainRecyclerViewAdapter mAdapter;
     private SwipeRefreshLayout mainSwipeRefreshLayout;
     private boolean mIsFirstTimeTouchBottom;
+    private boolean isHasMore = true;
 
     @Override
     protected int provideContentViewId() {
@@ -82,6 +84,8 @@ public class MainActivity extends ToolbarActivity {
         mainSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                isHasMore = true;
+                mainSwipeRefreshLayout.setEnabled(true);
                 mAdapter.setPageOne();
                 requestBenefitsData();
             }
@@ -89,6 +93,8 @@ public class MainActivity extends ToolbarActivity {
     }
 
     private void requestBenefitsData(){
+        if(!isHasMore) return;
+
         Subscriber<ModuleResult> subscriber = new Subscriber<ModuleResult>() {
             @Override
             public void onCompleted() {
@@ -104,6 +110,14 @@ public class MainActivity extends ToolbarActivity {
             public void onNext(ModuleResult module) {
                 Log.d("module",module.toString());
 
+                List<Module> list = module.results;
+                if(list == null){
+                    isHasMore = false;
+                    return;
+                }
+                if(list.size() < 10){
+                    isHasMore = false;
+                }
                 Observable.just(module).flatMap(new Func1<ModuleResult, Observable<Module>>() {
                     @Override
                     public Observable<Module> call(ModuleResult moduleResult) {
@@ -127,6 +141,7 @@ public class MainActivity extends ToolbarActivity {
                         ArrayList<Module> list = (ArrayList<Module>) mAdapter.getList();
                         String dateTemp = module.fetchPublishedAtAsLocal();
                         boolean hasTheDate = false;
+                        //逐个比较日期，排除相同的日期的照片
                         for (Module module1 : list) {
                             if(dateTemp.equals(module1.fetchPublishedAtAsLocal())){
                                 hasTheDate = true;
@@ -177,7 +192,7 @@ public class MainActivity extends ToolbarActivity {
                                 mAdapter.getItemCount() -
                                         10;
                 if (!mainSwipeRefreshLayout.isRefreshing() && isBottom) {
-                    if (!mIsFirstTimeTouchBottom) {
+                    if (!mIsFirstTimeTouchBottom && isHasMore) {
                         mainSwipeRefreshLayout.setRefreshing(true);
                         requestBenefitsData();
                     }
