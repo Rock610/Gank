@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.litesuits.orm.db.assit.QueryBuilder;
-import com.litesuits.orm.db.model.ConflictAlgorithm;
 import com.rock.android.gank.GankApp;
 import com.rock.android.gank.Model.Module;
 import com.rock.android.gank.Model.ModuleResult;
@@ -156,13 +155,9 @@ public class MainActivity extends ToolbarActivity {
                 }).subscribe(new Subscriber<Module>() {
                     @Override
                     public void onCompleted() {
-                        //只保存第一页
-                        if(mAdapter.getPage() == 1){
-                            GankApp.GankDB.insert(mAdapter.getList(), ConflictAlgorithm.Replace);
-                        }
                         mAdapter.notifyDataSetChanged();
                         mAdapter.pagePlusOne();
-
+                        GankApp.GankDB.save(mAdapter.getList());
                     }
 
                     @Override

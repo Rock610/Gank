@@ -53,6 +53,8 @@ public class BaseNetWorkManager {
 
     }
 
+    //缓存策略拦截器,有需要可以加上，感觉retrofit的缓存使用起来并不方便
+    //以后可以考虑换回volley或者纯okhttp框架
     Interceptor interceptor = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
