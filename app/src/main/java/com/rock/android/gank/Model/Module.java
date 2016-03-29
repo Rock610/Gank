@@ -1,5 +1,6 @@
 package com.rock.android.gank.Model;
 
+import com.litesuits.orm.db.annotation.Column;
 import com.rock.android.rocklibrary.Utils.DateFormat;
 
 import java.io.Serializable;
@@ -20,15 +21,16 @@ public class Module implements Serializable{
      * used : true
      * who : 张涵宇
      */
-    public String _id;
-    public String _ns;
-    public Date createdAt;
-    public String desc;
-    public Date publishedAt;
-    public String type;
-    public String url;
-    public boolean used;
-    public String who;
+
+    @Column("_id") public String _id;
+    @Column("_ns")public String _ns;
+    @Column("createdAt")public Date createdAt;
+    @Column("desc")public String desc;
+    @Column("publishedAt")public Date publishedAt;
+    @Column("type")public String type;
+    @Column("url")public String url;
+    @Column("used")public boolean used;
+    @Column("who")public String who;
 
     public String fetchPublishedAtAsLocal(){
         return DateFormat.dateToString(publishedAt);
