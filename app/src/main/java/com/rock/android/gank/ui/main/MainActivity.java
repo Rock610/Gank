@@ -1,4 +1,4 @@
-package com.rock.android.gank.ui;
+package com.rock.android.gank.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,8 @@ import com.rock.android.gank.Model.Module;
 import com.rock.android.gank.Model.ModuleResult;
 import com.rock.android.gank.R;
 import com.rock.android.gank.network.NetWorkManager;
+import com.rock.android.gank.ui.AboutActivity;
+import com.rock.android.gank.ui.GankContentActivity;
 import com.rock.android.gank.ui.adapter.MainRecyclerViewAdapter;
 import com.rock.android.gank.ui.base.ToolbarActivity;
 import com.rock.android.gank.util.SpacesItemDecoration;

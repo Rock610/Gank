@@ -1,0 +1,41 @@
+ext {
+    String supportVersion = "25.1.0"
+    String dagger2Version = "2.4"
+    androidConfig = [
+            compileSdkVersion: 25,
+            buildToolsVersion: '25.0.2',
+            targetSdkVersion : 22
+    ]
+    dependencies = [
+            "design"                      : 'com.android.support:design:' + supportVersion,
+            "appcompat-v7"                : 'com.android.support:appcompat-v7:' + supportVersion,
+            "recyclerview"                : 'com.android.support:recyclerview-v7:' + supportVersion,
+            "support-v4"                  : 'com.android.support:support-v4:' + supportVersion,
+            "cardview-v7"                 : 'com.android.support:cardview-v7:' + supportVersion,
+
+            "packer-helper"               : 'com.mcxiaoke.gradle:packer-helper:1.0.9',
+            "infiniteindicator"           : 'cn.lightsky.infiniteindicator:library:1.1.0',
+            "fresco"                      : 'com.facebook.fresco:fresco:1.1.0',
+            "DatePicker"                  : 'cn.aigestudio.datepicker:DatePicker:2.0.2',
+            "dialogplus"                  : 'com.orhanobut:dialogplus:1.11@aar',
+            "tagselector"                 : 'com.rock.android:tagselector:1.2.2.3',
+            "recyclerview-flexibledivider": 'com.yqritc:recyclerview-flexibledivider:1.4.0',
+            "zxing"                       : 'com.google.zxing:core:3.2.1',
+            "blurdialogfragment"          : 'fr.tvbarthel.blurdialogfragment:lib:2.2.0',
+            "constraint-layout"           : 'com.android.support.constraint:constraint-layout:1.0.0-alpha6',
+            "keyboardwatcher"             : 'com.azimolabs.keyboardwatcher:keyboardwatcher:0.1.3',
+            "rxpermissions"               : 'com.tbruyelle.rxpermissions:rxpermissions:0.8.2@aar',
+            "eventbus"                    : 'org.greenrobot:eventbus:3.0.0',
+            "glide"                       : 'com.github.bumptech.glide:glide:3.7.0',
+            "okhttp3"                     : 'com.squareup.okhttp3:okhttp:3.6.0',
+            "rxandroid"                   : 'io.reactivex:rxandroid:1.0.1',
+            "rxjava"                      : 'io.reactivex:rxjava:1.0.16',
+            "umeng"                       : 'com.umeng.analytics:analytics:latest.integration',
+            "logging-interceptor"         : 'com.squareup.okhttp3:logging-interceptor:3.6.0',
+            "multidex"                    : 'com.android.support:multidex:1.0.0',
+            "logger":'com.orhanobut:logger:1.15',
+            "wechatSDK":'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.0.2',
+            "dagger2":'com.google.dagger:dagger:'+dagger2Version,
+    ]
+
+}
