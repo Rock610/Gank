@@ -17,7 +17,6 @@ import com.rock.android.gank.ui.GankContentActivity;
 import com.rock.android.gank.ui.adapter.MainRecyclerViewAdapter;
 import com.rock.android.gank.ui.base.ToolbarActivity;
 import com.rock.android.gank.util.SpacesItemDecoration;
-import com.rock.android.rocklibrary.Utils.DensityUtils;
 
 import java.util.ArrayList;
 
@@ -62,7 +61,7 @@ public class MainActivity extends ToolbarActivity implements MainView{
         mainRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
         GridLayoutManager layoutManager = new GridLayoutManager(this,2);
         mainRecyclerView.setLayoutManager(layoutManager);
-        mainRecyclerView.addItemDecoration(new SpacesItemDecoration(2,DensityUtils.dip2px(this,10),false));
+        mainRecyclerView.addItemDecoration(new SpacesItemDecoration(2,getResources().getDimensionPixelSize(R.dimen.gridSpacing),true));
         mAdapter = new MainRecyclerViewAdapter(this);
 
         mainRecyclerView.setAdapter(mAdapter);

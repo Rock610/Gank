@@ -6,12 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.rock.android.gank.GankApp;
 import com.rock.android.gank.Model.Module;
 import com.rock.android.gank.R;
 import com.rock.android.rocklibrary.Utils.DateFormat;
@@ -34,7 +32,7 @@ public class MainRecyclerViewAdapter extends BaseRecyclerViewAdapter<Module,Main
 
     @Override
     public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_recyclerview,null);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_recyclerview,parent,false);
 
         return new MainViewHolder(itemView);
     }
@@ -64,12 +62,13 @@ public class MainRecyclerViewAdapter extends BaseRecyclerViewAdapter<Module,Main
         public TextView archivesTv;
         public MainViewHolder(View itemView) {
             super(itemView);
-            int width = GankApp.mWidth/2;
-            int height = (int) (width * 1.2);
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(width,height);
-            itemView.setLayoutParams(params);
+//            Context context = itemView.getContext();
+//            int width = GankApp.mWidth/2 - 3 * context.getResources().getDimensionPixelSize(R.dimen.gridSpacing);
+//            int height = (int) (width * 1.2);
+//            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(width,height);
+//            itemView.setLayoutParams(params);
             imageView = (ImageView) itemView.findViewById(R.id.girlsImage);
-            imageView.setLayoutParams(new FrameLayout.LayoutParams(width,height));
+//            imageView.setLayoutParams(new FrameLayout.LayoutParams(width,height));
             archivesTv = (TextView) itemView.findViewById(R.id.archivesTitleTv);
 
             itemView.setOnClickListener(this);

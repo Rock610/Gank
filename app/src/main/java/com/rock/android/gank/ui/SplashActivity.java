@@ -78,11 +78,11 @@ public class SplashActivity extends Activity {
     private Module queryDbToLoadData(){
         QueryBuilder qb = QueryBuilder.create(Module.class);
         qb.appendOrderDescBy("publishedAt");
-        qb.limit(0,10);
+        qb.limit(0,1);
         ArrayList<Module> modules = GankApp.GankDB.query(qb);
 
         if(modules!=null && modules.size() > 0){
-            return modules.get(1);
+            return modules.get(0);
         }
 
         return null;
