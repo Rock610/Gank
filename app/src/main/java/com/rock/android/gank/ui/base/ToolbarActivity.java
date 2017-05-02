@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
 import com.rock.android.gank.R;
-import com.rock.android.rocklibrary.ui.BaseActivity;
 
 
 public abstract class ToolbarActivity extends BaseActivity implements View.OnClickListener{
@@ -72,7 +71,7 @@ public abstract class ToolbarActivity extends BaseActivity implements View.OnCli
 
 
     public boolean canBack() {
-        return false;
+        return true;
     }
 
 

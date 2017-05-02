@@ -1,4 +1,4 @@
-package com.rock.android.rocklibrary.ui;
+package com.rock.android.gank.ui.base;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;

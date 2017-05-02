@@ -6,18 +6,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.litesuits.orm.db.assit.QueryBuilder;
-import com.rock.android.gank.GankApp;
 import com.rock.android.gank.Model.Module;
-import com.rock.android.gank.Model.ModuleResult;
 import com.rock.android.gank.R;
-import com.rock.android.gank.network.NetWorkManager;
 import com.rock.android.gank.ui.AboutActivity;
 import com.rock.android.gank.ui.GankContentActivity;
 import com.rock.android.gank.ui.adapter.MainRecyclerViewAdapter;
@@ -26,21 +20,19 @@ import com.rock.android.gank.util.SpacesItemDecoration;
 import com.rock.android.rocklibrary.Utils.DensityUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.functions.Func1;
+import javax.inject.Inject;
 
-public class MainActivity extends ToolbarActivity {
+public class MainActivity extends ToolbarActivity implements MainView{
 
     private RecyclerView mainRecyclerView;
     private MainRecyclerViewAdapter mAdapter;
     private SwipeRefreshLayout mainSwipeRefreshLayout;
     private boolean mIsFirstTimeTouchBottom;
     private boolean isHasMore = true;
-    private Subscription mSubscription;
+
+    @Inject
+    MainPresenter<MainView> mPresenter;
 
     @Override
     protected int provideContentViewId() {
@@ -50,7 +42,8 @@ public class MainActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
+
+        getComponent().inject(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,13 +55,6 @@ public class MainActivity extends ToolbarActivity {
 
         init();
 
-        mainSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                requestBenefitsData();
-            }
-        });
-
     }
 
     private void init(){
@@ -76,7 +62,7 @@ public class MainActivity extends ToolbarActivity {
         mainRecyclerView = (RecyclerView) findViewById(R.id.mainRecyclerView);
         GridLayoutManager layoutManager = new GridLayoutManager(this,2);
         mainRecyclerView.setLayoutManager(layoutManager);
-        mainRecyclerView.addItemDecoration(new SpacesItemDecoration(2,DensityUtils.dip2px(this,10),true));
+        mainRecyclerView.addItemDecoration(new SpacesItemDecoration(2,DensityUtils.dip2px(this,10),false));
         mAdapter = new MainRecyclerViewAdapter(this);
 
         mainRecyclerView.setAdapter(mAdapter);
@@ -96,105 +82,14 @@ public class MainActivity extends ToolbarActivity {
         mainSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                isHasMore = true;
+                setHasMore(true);
                 mainSwipeRefreshLayout.setEnabled(true);
                 mAdapter.setPageOne();
-                requestBenefitsData();
+                mPresenter.requestBenefitsData();
             }
         });
 
-        queryDbToLoadData();
-
-    }
-
-    private void queryDbToLoadData(){
-        QueryBuilder qb = QueryBuilder.create(Module.class);
-        qb.appendOrderDescBy("publishedAt");
-        qb.limit(0,10);
-        mAdapter.addAll(GankApp.GankDB.query(qb));
-
-    }
-
-    private void requestBenefitsData(){
-        if(!isHasMore) return;
-
-        Subscriber<ModuleResult> subscriber = new Subscriber<ModuleResult>() {
-            @Override
-            public void onCompleted() {
-                mainSwipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mainSwipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(MainActivity.this, R.string.request_failed,Toast.LENGTH_SHORT).show();
-                Log.e("requestBenefits",e.toString());
-            }
-
-            @Override
-            public void onNext(ModuleResult module) {
-                Log.d("module",module.toString());
-
-                List<Module> list = module.results;
-                if(list == null){
-                    isHasMore = false;
-                    return;
-                }
-                if(list.size() < 10){
-                    isHasMore = false;
-                }
-
-                if(mAdapter.getPage() == 1){
-                    mAdapter.clear();
-                }
-
-                Observable.just(module).flatMap(new Func1<ModuleResult, Observable<Module>>() {
-                    @Override
-                    public Observable<Module> call(ModuleResult moduleResult) {
-
-                        return Observable.from(moduleResult.results);
-                    }
-                }).subscribe(new Subscriber<Module>() {
-                    @Override
-                    public void onCompleted() {
-                        mAdapter.notifyDataSetChanged();
-                        mAdapter.pagePlusOne();
-                        GankApp.GankDB.save(mAdapter.getList());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Module module) {
-                        ArrayList<Module> list = (ArrayList<Module>) mAdapter.getList();
-                        String dateTemp = module.fetchPublishedAtAsLocal();
-                        boolean hasTheDate = false;
-                        //逐个比较日期，排除相同的日期的照片
-                        for (Module module1 : list) {
-                            if(dateTemp.equals(module1.fetchPublishedAtAsLocal())){
-                                hasTheDate = true;
-                                break;
-                            }
-                        }
-                        if(!hasTheDate){
-                            list.add(module);
-                        }
-                    }
-                });
-
-            }
-        };
-
-        mSubscription = NetWorkManager.getInstance().getDataByType(subscriber,"福利",10,mAdapter.getPage());
-    }
-
-    @Override
-    protected void onDestroy() {
-        mSubscription.unsubscribe();
-        super.onDestroy();
+        mPresenter.onAttach(this);
 
     }
 
@@ -231,8 +126,9 @@ public class MainActivity extends ToolbarActivity {
                                         10;
                 if (!mainSwipeRefreshLayout.isRefreshing() && isBottom) {
                     if (!mIsFirstTimeTouchBottom && isHasMore) {
-                        mainSwipeRefreshLayout.setRefreshing(true);
-                        requestBenefitsData();
+                        setRefreshing(true);
+
+                        mPresenter.requestBenefitsData();
                     }
                     else {
                         mIsFirstTimeTouchBottom = false;
@@ -240,5 +136,51 @@ public class MainActivity extends ToolbarActivity {
                 }
             }
         };
+    }
+
+    @Override
+    public boolean isHasMore() {
+        return isHasMore;
+    }
+
+    @Override
+    public void setRefreshing(boolean b) {
+        mainSwipeRefreshLayout.setRefreshing(b);
+    }
+
+    @Override
+    public int getPage() {
+        return mAdapter.getPage();
+    }
+
+    @Override
+    public void setHasMore(boolean b) {
+        isHasMore = b;
+    }
+
+    @Override
+    public void clearList() {
+        mAdapter.clear();
+    }
+
+    @Override
+    public void refreshDataModule(ArrayList<Module> module,boolean fromDB) {
+        mAdapter.addAll(module);
+
+        if(!fromDB){
+            mAdapter.notifyDataSetChanged();
+            mAdapter.pagePlusOne();
+        }
+
+    }
+
+    @Override
+    public ArrayList<Module> getCurrentDataList() {
+        return (ArrayList<Module>) mAdapter.getList();
+    }
+
+    @Override
+    public boolean canBack() {
+        return false;
     }
 }

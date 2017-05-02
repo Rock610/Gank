@@ -22,12 +22,10 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile rootProject.ext.dependencies['appcompat-v7']
-    compile rootProject.ext.dependencies['design']
     compile rootProject.ext.dependencies['dagger2']
     apt 'com.google.dagger:dagger-compiler:2.4'
     //java注解
     compile 'org.glassfish:javax.annotation:10.0-b28'
-
+//    compile 'com.google.code.gson:gson:2.6.2'
     compile project(':library')
 }
