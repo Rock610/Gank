@@ -62,15 +62,8 @@ public class MainRecyclerViewAdapter extends BaseRecyclerViewAdapter<Module,Main
         public TextView archivesTv;
         public MainViewHolder(View itemView) {
             super(itemView);
-//            Context context = itemView.getContext();
-//            int width = GankApp.mWidth/2 - 3 * context.getResources().getDimensionPixelSize(R.dimen.gridSpacing);
-//            int height = (int) (width * 1.2);
-//            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(width,height);
-//            itemView.setLayoutParams(params);
             imageView = (ImageView) itemView.findViewById(R.id.girlsImage);
-//            imageView.setLayoutParams(new FrameLayout.LayoutParams(width,height));
             archivesTv = (TextView) itemView.findViewById(R.id.archivesTitleTv);
-
             itemView.setOnClickListener(this);
         }
 
