@@ -1,6 +1,9 @@
 package com.rock.android.gank;
 
+import android.content.Context;
+
 import com.litesuits.orm.LiteOrm;
+import com.rock.android.gank.util.HookUtil;
 import com.rock.android.rocklibrary.BaseApplication;
 
 /**
@@ -13,6 +16,19 @@ public class GankApp extends BaseApplication{
     public static GankApp instance;
     public static final String DB_NAME = "rock_gank.db";
     public static LiteOrm GankDB;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+
+        try {
+            HookUtil.hookAMS();
+            HookUtil.hookHandler();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

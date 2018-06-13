@@ -14,8 +14,10 @@ import com.rock.android.gank.Model.Module;
 import com.rock.android.gank.R;
 import com.rock.android.gank.ui.AboutActivity;
 import com.rock.android.gank.ui.GankContentActivity;
+import com.rock.android.gank.ui.TestTargetActivity;
 import com.rock.android.gank.ui.adapter.MainRecyclerViewAdapter;
 import com.rock.android.gank.ui.base.ToolbarActivity;
+import com.rock.android.gank.util.HookUtil;
 import com.rock.android.gank.util.SpacesItemDecoration;
 
 import java.util.ArrayList;
@@ -48,7 +50,9 @@ public class MainActivity extends ToolbarActivity implements MainView{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(MainActivity.this, TestTargetActivity.class);
+                intent.putExtra(HookUtil.HOOK_ME,true);
+                startActivity(intent);
             }
         });
 
