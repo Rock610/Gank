@@ -13,6 +13,7 @@ import android.view.View;
 import com.rock.android.gank.Model.Module;
 import com.rock.android.gank.R;
 import com.rock.android.gank.ui.AboutActivity;
+import com.rock.android.gank.ui.contentmvvm.ContentMVVMActivity;
 import com.rock.android.gank.ui.GankContentActivity;
 import com.rock.android.gank.ui.TestTargetActivity;
 import com.rock.android.gank.ui.adapter.MainRecyclerViewAdapter;
@@ -76,7 +77,7 @@ public class MainActivity extends ToolbarActivity implements MainView{
             @Override
             public void onItemClick(View v, int position) {
                 Module module = mAdapter.getList().get(position);
-                Intent intent = new Intent(MainActivity.this,GankContentActivity.class);
+                Intent intent = new Intent(MainActivity.this,ContentMVVMActivity.class);
                 intent.putExtra(GankContentActivity.KEY_DATE, module.fetchPublishedAtAsLocal());
                 startActivity(intent);
             }

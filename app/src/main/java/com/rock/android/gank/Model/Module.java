@@ -32,6 +32,81 @@ public class Module implements Serializable{
     @Column("used")public boolean used;
     @Column("who")public String who;
 
+    public String get_id() {
+        return _id;
+    }
+
+    public Module set_id(String _id) {
+        this._id = _id;
+        return this;
+    }
+
+    public String get_ns() {
+        return _ns;
+    }
+
+    public Module set_ns(String _ns) {
+        this._ns = _ns;
+        return this;
+    }
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Module setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+    public String getDesc() {
+        return desc;
+    }
+
+    public Module setDesc(String desc) {
+        this.desc = desc;
+        return this;
+    }
+    public Date getPublishedAt() {
+        return publishedAt;
+    }
+
+    public Module setPublishedAt(Date publishedAt) {
+        this.publishedAt = publishedAt;
+        return this;
+    }
+    public String getType() {
+        return type;
+    }
+
+    public Module setType(String type) {
+        this.type = type;
+        return this;
+    }
+    public String getUrl() {
+        return url;
+    }
+
+    public Module setUrl(String url) {
+        this.url = url;
+        return this;
+    }
+
+    public boolean isUsed() {
+        return used;
+    }
+
+    public Module setUsed(boolean used) {
+        this.used = used;
+        return this;
+    }
+    public String getWho() {
+        return who;
+    }
+
+    public Module setWho(String who) {
+        this.who = who;
+        return this;
+    }
+
     public String fetchPublishedAtAsLocal(){
         return DateFormat.dateToString(publishedAt);
     }

@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/Gank.iml" filepath="$PROJECT_DIR$/Gank.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/module-annotation/module-annotation.iml" filepath="$PROJECT_DIR$/module-annotation/module-annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/myioc-processor/myioc-processor.iml" filepath="$PROJECT_DIR$/myioc-processor/myioc-processor.iml" />
     </modules>
   </component>
 </project>

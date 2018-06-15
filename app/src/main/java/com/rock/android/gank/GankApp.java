@@ -3,7 +3,6 @@ package com.rock.android.gank;
 import android.content.Context;
 
 import com.litesuits.orm.LiteOrm;
-import com.rock.android.gank.util.HookUtil;
 import com.rock.android.rocklibrary.BaseApplication;
 
 /**
@@ -21,12 +20,12 @@ public class GankApp extends BaseApplication{
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
 
-        try {
-            HookUtil.hookAMS();
-            HookUtil.hookHandler();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            HookUtil.hookAMS();
+//            HookUtil.hookHandler();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
